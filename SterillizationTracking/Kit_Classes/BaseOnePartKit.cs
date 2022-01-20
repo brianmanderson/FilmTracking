@@ -95,38 +95,17 @@ namespace SterillizationTracking.Kit_Classes
             KitDirectoryPath = Path.Combine(file_path, name, $"Kit {kitnumber}");
             UseFileLocation = Path.Combine(KitDirectoryPath, "Uses.txt");
 
-            warning_uses = 80;
-            total_uses = 100;
+            warning_uses = 25;
+            total_uses = 25;
             CanReorder = false;
             Description = "";
-            if (name == "Cylinder")
+            if (name == "EBT3")
             {
-                total_uses = 500;
-                warning_uses = 450;
-                Description = "18 Pieces";
+                Description = "";
             }
-            else if (name == "Tandem and Ovoid")
+            else if (name == "EBT-XD")
             {
-                Description = "18 Pieces";
-                total_uses = 100;
-                warning_uses = 80;
-            }
-            else if (name == "Needle Kit")
-            {
-                total_uses = 25;
-                warning_uses = 18;
-                Description = "Count: 10, 20 Pieces";
-            }
-            else if (name == "Segmented Cylinder")
-            {
-                total_uses = 500;
-                warning_uses = 450;
-            }
-            else if (name == "Cervix Applicator Set")
-            {
-                Description = "10 Pieces";
-                total_uses = 500;
-                warning_uses = 450;
+                Description = "";
             }
             CanAdd = true;
             UsageDates = new List<string>();

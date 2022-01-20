@@ -28,12 +28,10 @@ namespace SterillizationTracking
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private List<string> _kit_numbers = new List<string> { "" };
-        private List<string> _kit_names = new List<string> { "Select an applicator", "Cylinder", "Cervix Applicator Set", "Needle Kit", "Segmented Cylinder", 
-            "Tandem and Ovoid", "Tandem and Ring", "Y Applicator"};
-        private List<string> _filter_kit_names = new List<string> { "All applicators", "Cylinder", "Cervix Applicator Set", "Needle Kit", "Segmented Cylinder",
-            "Tandem and Ovoid", "Tandem and Ring", "Y Applicator"};
+        private List<string> _kit_names = new List<string> { "Select a film box", "EBT3", "EBT-XD"};
+        private List<string> _filter_kit_names = new List<string> { "All films", "EBT3", "EBT-XD"};
 
-        public string applicator_directory = @"\\ucsdhc-varis2\radonc$\HDR updates\Steralization_Kits_Tracking\Kit_Status";  //
+        public string applicator_directory = @"\\ucsdhc-varis2\radonc$\Film_Kits_Tracking\Kit_Status";  //
         public string kit_name;
         public string kit_number;
         public List<string> Kit_Numbers
@@ -103,13 +101,6 @@ namespace SterillizationTracking
 
         public void Add_Kit(string kit_name, string kit_number, string file_path)
         {
-            if (kit_name.Contains("Tandem and Ring") || kit_name.Contains("Y Applicator"))
-            {
-                BaseTwoPartKit new_kit = new BaseTwoPartKit(name: kit_name, kitnumber: kit_number, file_path: file_path);
-                AddTwoKitRow new_row = new AddTwoKitRow(new_kit);
-                KitStackPanel.Children.Add(new_row);
-            }
-            else
             {
                 BaseOnePartKit new_kit = new BaseOnePartKit(name: kit_name, kitnumber: kit_number, file_path: file_path);
                 AddKitRow new_row = new AddKitRow(new_kit);
@@ -191,7 +182,7 @@ namespace SterillizationTracking
         private void Kit_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             kit_name = Kit_Names[Kit_ComboBox.SelectedIndex];
-            if (kit_name.Contains("Select an applicator"))
+            if (kit_name.Contains("Select a film box"))
             {
                 if (KitNumber_ComboBox != null)
                 {
@@ -226,7 +217,7 @@ namespace SterillizationTracking
         private void FilterNameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string filter_kit_selection_info = Convert.ToString(FilterNameComboBox.SelectedItem);
-            if (filter_kit_selection_info.Contains("applicators"))
+            if (filter_kit_selection_info.Contains("All"))
             {
                 Rebuild_From_Files();
 

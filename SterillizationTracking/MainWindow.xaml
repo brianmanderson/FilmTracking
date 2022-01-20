@@ -12,7 +12,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Button x:Name="Add_Kit_Button" Content="Add Kit" IsEnabled="False" HorizontalAlignment="Left" Height="36" Margin="377,28,0,0" VerticalAlignment="Top" Width="136" Click="Add_Kit_Button_Click"/>
+        <Button x:Name="Add_Kit_Button" Content="Add Box" IsEnabled="False" HorizontalAlignment="Left" Height="36" Margin="377,28,0,0" VerticalAlignment="Top" Width="136" Click="Add_Kit_Button_Click"/>
         <ComboBox x:Name="Kit_ComboBox" HorizontalAlignment="Left" Margin="33,28,0,0" VerticalAlignment="Top" Width="156" Height="36"
                   SelectionChanged="Kit_ComboBox_SelectionChanged" SelectedIndex="0">
         </ComboBox>
@@ -23,7 +23,6 @@
                   SelectionChanged="FilterNameComboBox_SelectionChanged" IsEnabled="True" SelectedIndex="0"/>
         <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" Margin="767,28,0,0" VerticalAlignment="Top" Height="36" Width="420">
             For issues, please e-mail Brian Anderson @ b5anderson@health.ucsd.edu
-            Thank you to Emily for help in program creation.
         </TextBlock>
     </Grid>
 </Window>
