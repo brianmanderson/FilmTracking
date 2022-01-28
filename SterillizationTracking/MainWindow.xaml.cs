@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using SterillizationTracking.Kit_Classes;
 using SterillizationTracking.StackPanelClasses;
 using SterillizationTracking.Services;
@@ -33,7 +32,7 @@ namespace SterillizationTracking
         private List<string> _kit_names;
         private List<string> _filter_kit_names = new List<string> { "All items"};
 
-        public string applicator_directory = @"C:\Users\markb\Modular_Projects\Equipment_Tracking\Equipment";
+        public string applicator_directory = Path.GetFullPath(Path.Combine("..", "Equipment_Tracking", "Equipment"));
         public string kit_name;
         public string kit_number;
         public List<string> Kit_Numbers
@@ -74,6 +73,10 @@ namespace SterillizationTracking
         public MainWindow()
         {
             InitializeComponent();
+            if (!Directory.Exists(applicator_directory))
+            {
+                Directory.CreateDirectory(applicator_directory);
+            }
             Rebuild_From_Files();
         }
         private void bind()
@@ -134,7 +137,7 @@ namespace SterillizationTracking
                 string applicator_name = temp_list[temp_list.Length - 1];
                 _kit_names.Add(applicator_name);
                 _filter_kit_names.Add(applicator_name);
-                string full_applicator_path = System.IO.Path.Combine(applicator_directory, directory_kit_name);
+                string full_applicator_path = Path.Combine(applicator_directory, directory_kit_name);
                 kit_list = Directory.GetDirectories(full_applicator_path);
                 if (kit_list.Length > 0)
                 {
@@ -169,7 +172,7 @@ namespace SterillizationTracking
                 string[] temp_list = directory_kit_name.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
 
-                string full_applicator_path = System.IO.Path.Combine(applicator_directory, directory_kit_name);
+                string full_applicator_path = Path.Combine(applicator_directory, directory_kit_name);
                 kit_list = Directory.GetDirectories(full_applicator_path);
                 if (kit_list.Length > 0)
                 {

@@ -11,7 +11,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Runtime.CompilerServices;
 
 
@@ -58,8 +57,8 @@ namespace SterillizationTracking.Windows
 
         private void AddCategory_Click(object sender, RoutedEventArgs e)
         {
-            string out_path = System.IO.Path.Join(applicator_directory, category_name);
-            string out_file = System.IO.Path.Join(out_path, "Total_Uses.txt");
+            string out_path = Path.Join(applicator_directory, category_name);
+            string out_file = Path.Join(out_path, "Total_Uses.txt");
             if (!Directory.Exists(out_path))
             {
                 Directory.CreateDirectory(out_path);
