@@ -29,9 +29,9 @@ namespace SterillizationTracking
     {
         private List<string> _kit_numbers = new List<string> { "" };
         private List<string> _kit_names = new List<string> { "Select a film box", "EBT3", "EBT-XD"};
-        private List<string> _filter_kit_names = new List<string> { "All films", "EBT3", "EBT-XD"};
+        private List<string> _filter_kit_names = new List<string> { "All items", "EBT3", "EBT-XD"};
 
-        public string applicator_directory = @"\\ucsdhc-varis2\radonc$\Film_Kits_Tracking\Kit_Status";  //
+        public string applicator_directory = @"\\ucsdhc-varis2\radonc$\Equipment_Tracking\Kit_Status";
         public string kit_name;
         public string kit_number;
         public List<string> Kit_Numbers
@@ -72,6 +72,7 @@ namespace SterillizationTracking
         public MainWindow()
         {
             InitializeComponent();
+            Category_Window.Visibility = Visibility.Hidden;
             Rebuild_From_Files();
             Binding number_binding = new Binding("Kit_Numbers");
             number_binding.Source = this;
@@ -228,5 +229,9 @@ namespace SterillizationTracking
             }
         }
 
+        private void Add_Category_Click(object sender, RoutedEventArgs e)
+        {
+            Category_Window.Visibility = Visibility.Visible;
+        }
     }
 }
