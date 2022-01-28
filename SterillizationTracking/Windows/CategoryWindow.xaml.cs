@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,11 +22,14 @@ namespace SterillizationTracking.Windows
     /// </summary>
     public partial class CategoryWindow : Window
     {
-        public CategoryWindow()
+        private string applicator_directory;
+        private string category_name;
+        private string total_uses;
+        public CategoryWindow(string applicator_directory)
         {
             InitializeComponent();
+            this.applicator_directory = applicator_directory;
         }
-        int n;
         private void CheckButton()
         {
             AddCategoryButton.IsEnabled = false;
@@ -34,7 +37,7 @@ namespace SterillizationTracking.Windows
             {
                 if (UsesText.Text != "")
                 {
-                    if (int.TryParse(UsesText.Text, out n))
+                    if (int.TryParse(UsesText.Text, out _))
                     {
                         AddCategoryButton.IsEnabled = true;
                     }
@@ -43,17 +46,31 @@ namespace SterillizationTracking.Windows
         }
         private void CategoryNameChanged(object sender, TextChangedEventArgs e)
         {
+            this.category_name = CategoryText.Text;
             CheckButton();
         }
 
         private void UsesChanged(object sender, TextChangedEventArgs e)
         {
+            this.total_uses = UsesText.Text;
             CheckButton();
         }
 
         private void AddCategory_Click(object sender, RoutedEventArgs e)
         {
-
+            string out_path = System.IO.Path.Join(applicator_directory, category_name);
+            string out_file = System.IO.Path.Join(out_path, "Total_Uses.txt");
+            if (!Directory.Exists(out_path))
+            {
+                Directory.CreateDirectory(out_path);
+            }
+            if (!File.Exists(out_file))
+            {
+                string[] info = { $"Total Uses:{total_uses}" };
+                File.WriteAllLines(out_file, info);
+            }
+            UsesText.Text = "";
+            CategoryText.Text = "";
         }
     }
 }

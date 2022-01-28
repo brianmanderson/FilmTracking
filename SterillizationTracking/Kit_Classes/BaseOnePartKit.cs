@@ -95,18 +95,12 @@ namespace SterillizationTracking.Kit_Classes
             KitDirectoryPath = Path.Combine(file_path, name, $"Kit {kitnumber}");
             UseFileLocation = Path.Combine(KitDirectoryPath, "Uses.txt");
 
-            warning_uses = 25;
-            total_uses = 25;
+            string TotalUsesPath = Path.Combine(file_path, name, "Total_Uses.txt");
+            List<string> lines = File.ReadAllLines(TotalUsesPath).ToList();
+            total_uses = int.Parse(lines[0].Split("Uses:")[1]);
+            warning_uses = Convert.ToInt32(total_uses * .75);
             CanReorder = false;
             Description = "";
-            if (name == "EBT3")
-            {
-                Description = "";
-            }
-            else if (name == "EBT-XD")
-            {
-                Description = "";
-            }
             CanAdd = true;
             UsageDates = new List<string>();
             build_read_use_file();

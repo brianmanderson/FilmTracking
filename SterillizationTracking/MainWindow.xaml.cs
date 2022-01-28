@@ -30,7 +30,7 @@ namespace SterillizationTracking
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private List<string> _kit_numbers = new List<string> { "" };
-        private List<string> _kit_names = new List<string> { "Select a piece of equipment", "EBT3", "EBT-XD"};
+        private List<string> _kit_names = new List<string> { "Select a piece of equipment"};
         private List<string> _filter_kit_names = new List<string> { "All items", "EBT3", "EBT-XD"};
 
         public string applicator_directory = @"C:\Users\markb\Modular_Projects\Equipment_Tracking\Equipment";
@@ -129,7 +129,10 @@ namespace SterillizationTracking
             {
                 string[] temp_list = directory_kit_name.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
-
+                if (!_kit_names.Contains(applicator_name))
+                {
+                    _kit_names.Add(applicator_name);
+                }
                 string full_applicator_path = System.IO.Path.Combine(applicator_directory, directory_kit_name);
                 kit_list = Directory.GetDirectories(full_applicator_path);
                 if (kit_list.Length > 0)
@@ -232,7 +235,7 @@ namespace SterillizationTracking
 
         private void Add_Category_Click(object sender, RoutedEventArgs e)
         {
-            Window window = new CategoryWindow();
+            Window window = new CategoryWindow(applicator_directory);
             window.Show();
         }
     }

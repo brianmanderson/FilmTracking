@@ -58,7 +58,7 @@ namespace SterillizationTracking.StackPanelClasses
 
             current_use_label = new Label();
             current_use_label.Width = 150;
-            Binding myBinding = new Binding("CurrentUseString");
+            Binding myBinding = new Binding("UsesLeftString");
             myBinding.Source = new_kit;
             current_use_label.SetBinding(Label.ContentProperty, myBinding);
             current_use_label.SetBinding(Label.BackgroundProperty, colorBinding);
