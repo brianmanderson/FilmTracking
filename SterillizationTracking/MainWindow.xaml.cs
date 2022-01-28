@@ -18,6 +18,8 @@ using SterillizationTracking.StackPanelClasses;
 using SterillizationTracking.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SterillizationTracking.Windows;
+
 
 namespace SterillizationTracking
 {
@@ -28,10 +30,10 @@ namespace SterillizationTracking
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private List<string> _kit_numbers = new List<string> { "" };
-        private List<string> _kit_names = new List<string> { "Select a film box", "EBT3", "EBT-XD"};
+        private List<string> _kit_names = new List<string> { "Select a piece of equipment", "EBT3", "EBT-XD"};
         private List<string> _filter_kit_names = new List<string> { "All items", "EBT3", "EBT-XD"};
 
-        public string applicator_directory = @"\\ucsdhc-varis2\radonc$\Equipment_Tracking\Kit_Status";
+        public string applicator_directory = @"C:\Users\markb\Modular_Projects\Equipment_Tracking\Equipment";
         public string kit_name;
         public string kit_number;
         public List<string> Kit_Numbers
@@ -72,7 +74,6 @@ namespace SterillizationTracking
         public MainWindow()
         {
             InitializeComponent();
-            Category_Window.Visibility = Visibility.Hidden;
             Rebuild_From_Files();
             Binding number_binding = new Binding("Kit_Numbers");
             number_binding.Source = this;
@@ -183,7 +184,7 @@ namespace SterillizationTracking
         private void Kit_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             kit_name = Kit_Names[Kit_ComboBox.SelectedIndex];
-            if (kit_name.Contains("Select a film box"))
+            if (kit_name.StartsWith("Select"))
             {
                 if (KitNumber_ComboBox != null)
                 {
@@ -231,7 +232,8 @@ namespace SterillizationTracking
 
         private void Add_Category_Click(object sender, RoutedEventArgs e)
         {
-            Category_Window.Visibility = Visibility.Visible;
+            Window window = new CategoryWindow();
+            window.Show();
         }
     }
 }
