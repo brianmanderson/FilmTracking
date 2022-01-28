@@ -14,9 +14,8 @@ namespace SterillizationTracking.Kit_Classes
 {
     public class BaseOnePartKit : INotifyPropertyChanged
     {
-        private int currentUse;
         private List<string> usageDates = new List<string>();
-        private string currentUse_string, usesLeft_string, description;
+        private string usesLeft_string, description;
         private System.Windows.Media.Brush statusColor;
         private string name;
         private string kitnumber;
@@ -40,15 +39,6 @@ namespace SterillizationTracking.Kit_Classes
             {
                 usageDates = value;
                 OnPropertyChanged("UsageDates");
-            }
-        }
-        public string CurrentUseString
-        {
-            get { return currentUse_string; }
-            set
-            {
-                currentUse_string = value;
-                OnPropertyChanged("CurrentUseString");
             }
         }
         public string UsesLeftString
@@ -108,11 +98,12 @@ namespace SterillizationTracking.Kit_Classes
 
         public void build_read_use_file()
         {
+            UsesLeft = total_uses;
             if (File.Exists(UseFileLocation))
             {
                 List<string> lines = File.ReadAllLines(UseFileLocation).ToList();
                 Description = lines[0].Split("Description:")[1];
-                CurrentUse = Convert.ToInt32(lines[1].Split("Use:")[1]);
+                UsesLeft = Convert.ToInt32(lines[1].Split("Use:")[1]);
                 total_uses = Convert.ToInt32(lines[2].Split("Uses:")[1]);
                 warning_uses = Convert.ToInt32(lines[3].Split("Uses:")[1]);
                 Present = lines[4].Split("updated:")[1];
@@ -128,8 +119,7 @@ namespace SterillizationTracking.Kit_Classes
             }
             else
             {
-                CurrentUse = 0;
-                string[] info ={ $"Description:{Description}", $"Current Use:{0}", $"Total Uses:{total_uses}", $"Warning Uses:{warning_uses}", $"Last updated:{Present}" };
+                string[] info ={ $"Description:{Description}", $"Left Use:{total_uses}", $"Total Uses:{total_uses}", $"Warning Uses:{warning_uses}", $"Last updated:{Present}" };
                 if (!Directory.Exists(KitDirectoryPath))
                 {
                     Directory.CreateDirectory(KitDirectoryPath);
@@ -137,14 +127,7 @@ namespace SterillizationTracking.Kit_Classes
                 File.WriteAllLines(UseFileLocation, info);
             }
             check_status();
-            CurrentUseString = $"Current use: {CurrentUse}";
-            UsesLeft = total_uses - CurrentUse;
             UsesLeftString = $"Uses left: {UsesLeft}";
-            CanAdd = true;
-            if (total_uses - CurrentUse == 0)
-            {
-                CanAdd = false;
-            }
         }
 
         public void create_reorder_file()
@@ -161,7 +144,7 @@ namespace SterillizationTracking.Kit_Classes
         }
         public void update_file()
         {
-            List<string> info = new List<string>() { $"Description:{Description}", $"Current Use:{CurrentUse}",
+            List<string> info = new List<string>() { $"Description:{Description}", $"Left Use:{UsesLeft}",
                 $"Total Uses:{total_uses}", $"Warning Uses:{warning_uses}", $"Last updated:{Present}" };
             info.AddRange(UsageDates);
             if (!Directory.Exists(KitDirectoryPath))
@@ -170,16 +153,6 @@ namespace SterillizationTracking.Kit_Classes
             }
             File.WriteAllLines(UseFileLocation, info);
             check_status();
-        }
-
-        public int CurrentUse
-        {
-            get { return currentUse; }
-            set
-            {
-                currentUse = value;
-                OnPropertyChanged("CurrentUse");
-            }
         }
 
         public int UsesLeft
@@ -253,26 +226,24 @@ namespace SterillizationTracking.Kit_Classes
             }
         }
 
-        public void add_use(object sender, RoutedEventArgs e)
+        public void add_use(int use, object sender, RoutedEventArgs e)
         {
             DateTime moment = DateTime.Now;
             Present = moment.ToLongDateString() + " " + moment.ToLongTimeString();
-            CurrentUse += 1;
-            CurrentUseString = $"Current use: {CurrentUse}";
-            UsesLeft = total_uses - CurrentUse;
+            UsesLeft -= use;
             UsesLeftString = $"Uses left: {UsesLeft}";
-            UsageDates.Add($"{CurrentUse}: {Present}");
+            UsageDates.Add($"{use} Used: {Present}");
             update_file();
             check_status();
         }
 
-        public void remove_use(object sender, RoutedEventArgs e)
+        public void remove_use(int use, object sender, RoutedEventArgs e)
         {
-            CurrentUse -= 1;
-            CurrentUseString = $"Current use: {CurrentUse}";
-            UsesLeft = total_uses - CurrentUse;
+            UsesLeft += use;
             UsesLeftString = $"Uses left: {UsesLeft}";
-            UsageDates.RemoveAt(UsageDates.Count - 1);
+            DateTime moment = DateTime.Now;
+            Present = moment.ToLongDateString() + " " + moment.ToLongTimeString();
+            UsageDates.Add($"{use} Replaced: {Present}");
             update_file();
             check_status();
         }
@@ -284,9 +255,7 @@ namespace SterillizationTracking.Kit_Classes
         public void reorder(object sender, RoutedEventArgs e)
         {
             create_reorder_file();
-            CurrentUse = 0;
-            CurrentUseString = $"Current use: {CurrentUse}";
-            UsesLeft = total_uses - CurrentUse;
+            UsesLeft = total_uses;
             UsesLeftString = $"Uses left: {UsesLeft}";
             UsageDates = new List<string>();
             update_file();
@@ -295,12 +264,12 @@ namespace SterillizationTracking.Kit_Classes
 
         public void check_status()
         {
-            if (CurrentUse >= total_uses)
+            if (UsesLeft == 0)
             {
                 StatusColor = System.Windows.Media.Brushes.Red;
                 CanReorder = true;
             }
-            else if (CurrentUse >= warning_uses * 0.75)
+            else if (total_uses - UsesLeft <= warning_uses * 0.75)
             {
                 StatusColor = System.Windows.Media.Brushes.Yellow;
                 CanReorder = false;

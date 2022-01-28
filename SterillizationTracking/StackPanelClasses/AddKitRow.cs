@@ -69,22 +69,21 @@ namespace SterillizationTracking.StackPanelClasses
 
             uses_text_box = new TextBox();
             uses_text_box.Width = 50;
-            Binding uses_text_binding = new Binding("");
             uses_text_box.TextChanged += uses_text_changed;
+            Children.Add(uses_text_box);
 
             add_use_button = new Button();
             Binding canAddBinding = new Binding("CanAdd");
             canAddBinding.Source = _new_kit;
             add_use_button.Click += add_use;
-            add_use_button.Click += disable_add_use_button;
-            add_use_button.SetBinding(Button.IsEnabledProperty, canAddBinding);
+            add_use_button.IsEnabled = false;
+            // add_use_button.SetBinding(Button.IsEnabledProperty, canAddBinding);
             add_use_button.Content = "Use";
             add_use_button.Padding = new Thickness(10);
             Children.Add(add_use_button);
 
             remove_use_button = new Button();
-            remove_use_button.Click += _new_kit.remove_use;
-            remove_use_button.Click += disable_remove_use_button;
+            remove_use_button.Click += remove_use;
             remove_use_button.Content = "Replace";
             remove_use_button.Padding = new Thickness(10);
             remove_use_button.IsEnabled = false;
@@ -95,7 +94,6 @@ namespace SterillizationTracking.StackPanelClasses
             Binding reorderBinding = new Binding("CanReorder");
             reorderBinding.Source = _new_kit;
             reorder_button.Click += _new_kit.reorder;
-            reorder_button.Click += reordered;
             reorder_button.Content = "Reorder";
             reorder_button.Padding = new Thickness(10);
             reorder_button.SetBinding(Button.IsEnabledProperty, reorderBinding);
@@ -138,7 +136,15 @@ namespace SterillizationTracking.StackPanelClasses
         {
             if (int.TryParse(uses_text_box.Text, out _))
             {
-                add_use_button.IsEnabled = true;
+                int values = int.Parse(uses_text_box.Text);
+                if (values <= _new_kit.UsesLeft)
+                {
+                    add_use_button.IsEnabled = true;
+                }
+                else
+                {
+                    add_use_button.IsEnabled = false;
+                }
                 remove_use_button.IsEnabled = true;
             }
             else
@@ -149,7 +155,15 @@ namespace SterillizationTracking.StackPanelClasses
         }
         public void add_use(object sender, RoutedEventArgs e)
         {
-            _new_kit.add_use(sender, e);
+            int uses = int.Parse(uses_text_box.Text);
+            _new_kit.add_use(uses, sender, e);
+            uses_text_box.Text = "";
+        }
+        public void remove_use(object sender, RoutedEventArgs e)
+        {
+            int uses = int.Parse(uses_text_box.Text);
+            _new_kit.remove_use(uses, sender, e);
+            uses_text_box.Text = "";
         }
         public void disable_add_use_button(object sender, RoutedEventArgs e)
         {
@@ -163,25 +177,16 @@ namespace SterillizationTracking.StackPanelClasses
             CheckBox_Checked(sender, e);
         }
 
-        public void reordered(object sender, RoutedEventArgs e)
-        {
-            remove_use_button.IsEnabled = false;
-        }
-
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             bool check = override_checkbox.IsChecked ?? false;
             if (check)
             {
-                add_use_button.IsEnabled = true;
-                remove_use_button.IsEnabled = true;
-                reorder_button.IsEnabled = true;
                 text_box.IsReadOnly = false;
             }
         }
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
         {
-            remove_use_button.IsEnabled = false;
             text_box.IsReadOnly = true;
         }
     }
