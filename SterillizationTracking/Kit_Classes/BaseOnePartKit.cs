@@ -169,6 +169,7 @@ namespace SterillizationTracking.Kit_Classes
                 Directory.CreateDirectory(KitDirectoryPath);
             }
             File.WriteAllLines(UseFileLocation, info);
+            check_status();
         }
 
         public int CurrentUse

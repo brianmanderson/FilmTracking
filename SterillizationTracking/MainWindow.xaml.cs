@@ -29,9 +29,9 @@ namespace SterillizationTracking
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private List<string> _kit_numbers = new List<string> { "" };
-        private List<string> _kit_names = new List<string> { "Select a piece of equipment"};
-        private List<string> _filter_kit_names = new List<string> { "All items", "EBT3", "EBT-XD"};
+        private List<string> _kit_numbers;
+        private List<string> _kit_names;
+        private List<string> _filter_kit_names = new List<string> { "All items"};
 
         public string applicator_directory = @"C:\Users\markb\Modular_Projects\Equipment_Tracking\Equipment";
         public string kit_name;
@@ -75,17 +75,18 @@ namespace SterillizationTracking
         {
             InitializeComponent();
             Rebuild_From_Files();
+        }
+        private void bind()
+        {
             Binding number_binding = new Binding("Kit_Numbers");
             number_binding.Source = this;
             KitNumber_ComboBox.SetBinding(ComboBox.ItemsSourceProperty, number_binding);
 
             Binding kit_name_binding = new Binding("Kit_Names");
-            Kit_Names = _kit_names;
             kit_name_binding.Source = this;
             Kit_ComboBox.SetBinding(ComboBox.ItemsSourceProperty, kit_name_binding);
 
             Binding filter_kit_binding = new Binding("Filter_Kit_Names");
-            Filter_Kit_Names = _filter_kit_names;
             filter_kit_binding.Source = this;
             FilterNameComboBox.SetBinding(ComboBox.ItemsSourceProperty, filter_kit_binding);
         }
@@ -125,14 +126,14 @@ namespace SterillizationTracking
             string[] kit_list;
             string actual_kit_number;
             string directory_kit_number;
+            _kit_names = new List<string> { "Select a piece of equipment" };
+            _filter_kit_names = new List<string> { "All items" };
             foreach (string directory_kit_name in applicator_list)
             {
                 string[] temp_list = directory_kit_name.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
-                if (!_kit_names.Contains(applicator_name))
-                {
-                    _kit_names.Add(applicator_name);
-                }
+                _kit_names.Add(applicator_name);
+                _filter_kit_names.Add(applicator_name);
                 string full_applicator_path = System.IO.Path.Combine(applicator_directory, directory_kit_name);
                 kit_list = Directory.GetDirectories(full_applicator_path);
                 if (kit_list.Length > 0)
@@ -148,6 +149,7 @@ namespace SterillizationTracking
                     }
                 }
             }
+            bind();
 
         }
         public void Rebuild_From_Files(string filter_applicator)
@@ -236,7 +238,8 @@ namespace SterillizationTracking
         private void Add_Category_Click(object sender, RoutedEventArgs e)
         {
             Window window = new CategoryWindow(applicator_directory);
-            window.Show();
+            window.ShowDialog();
+            Rebuild_From_Files();
         }
     }
 }
