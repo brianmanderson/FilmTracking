@@ -22,13 +22,23 @@ namespace SterillizationTracking.Kit_Classes
         private string useFileLocation;
         private string _present;
         private bool can_reorder, canAdd;
-        private int usesLeft;
+        private int usesLeft, total_uses;
 
-        public int total_uses;
         public int warning_uses;
         public string KitDirectoryPath;
         public string ReorderDirectoryPath;
-
+        public int TotalUses
+        {
+            get
+            {
+                return total_uses;
+            }
+            set
+            {
+                total_uses = value;
+                OnPropertyChanged("TotalUses");
+            }
+        }
         public List<string> UsageDates
         {
             get
@@ -255,7 +265,7 @@ namespace SterillizationTracking.Kit_Classes
         public void reorder(object sender, RoutedEventArgs e)
         {
             create_reorder_file();
-            UsesLeft = total_uses;
+            UsesLeft += total_uses;
             UsesLeftString = $"Uses left: {UsesLeft}";
             UsageDates = new List<string>();
             update_file();
@@ -269,7 +279,7 @@ namespace SterillizationTracking.Kit_Classes
                 StatusColor = System.Windows.Media.Brushes.Red;
                 CanReorder = true;
             }
-            else if (total_uses - UsesLeft <= warning_uses * 0.75)
+            else if (UsesLeft <= warning_uses * 0.75)
             {
                 StatusColor = System.Windows.Media.Brushes.Yellow;
                 CanReorder = false;

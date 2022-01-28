@@ -63,7 +63,7 @@ namespace SterillizationTracking.StackPanelClasses
             Binding myBinding = new Binding("UsesLeftString");
             myBinding.Source = _new_kit;
             current_use_label.SetBinding(Label.ContentProperty, myBinding);
-            current_use_label.SetBinding(Label.BackgroundProperty, colorBinding);
+            //current_use_label.SetBinding(Label.BackgroundProperty, colorBinding);
             current_use_label.Padding = new Thickness(10);
             Children.Add(current_use_label);
 
@@ -77,7 +77,6 @@ namespace SterillizationTracking.StackPanelClasses
             canAddBinding.Source = _new_kit;
             add_use_button.Click += add_use;
             add_use_button.IsEnabled = false;
-            // add_use_button.SetBinding(Button.IsEnabledProperty, canAddBinding);
             add_use_button.Content = "Use";
             add_use_button.Padding = new Thickness(10);
             Children.Add(add_use_button);
@@ -100,7 +99,7 @@ namespace SterillizationTracking.StackPanelClasses
             Children.Add(reorder_button);
 
             uses_left_label = new Label();
-            Binding usesleft_binding = new Binding("UsesLeftString");
+            Binding usesleft_binding = new Binding("TotalUses");
             usesleft_binding.Source = _new_kit;
             uses_left_label.SetBinding(Label.ContentProperty, usesleft_binding);
             uses_left_label.Padding = new Thickness(10);
@@ -113,7 +112,7 @@ namespace SterillizationTracking.StackPanelClasses
             Children.Add(status_label);
 
             override_label = new Label();
-            override_label.Content = "Override?";
+            override_label.Content = "Change Location/Reorder?";
             override_label.Padding = new Thickness(10);
             Children.Add(override_label);
 
@@ -183,11 +182,13 @@ namespace SterillizationTracking.StackPanelClasses
             if (check)
             {
                 text_box.IsReadOnly = false;
+                _new_kit.CanReorder = true;
             }
         }
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
         {
             text_box.IsReadOnly = true;
+            _new_kit.check_status();
         }
     }
 }
