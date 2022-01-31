@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,7 +21,7 @@ namespace SterillizationTracking.Windows
     /// </summary>
     public partial class CategoryWindow : Window, INotifyPropertyChanged
     {
-        private string applicator_directory;
+        private string applicator_directory, archive_directory;
         private string category_name;
         private string total_uses;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -51,6 +51,7 @@ namespace SterillizationTracking.Windows
         {
             InitializeComponent();
             this.applicator_directory = applicator_directory;
+            this.archive_directory = Path.Combine(applicator_directory, "Archive");
             Rebuild();
         }
         private void Rebuild()
@@ -61,7 +62,7 @@ namespace SterillizationTracking.Windows
             {
                 string[] temp_list = applicator.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
-                if (applicator_name != "Archived")
+                if (applicator_name != "Archive")
                 {
                     _category_names.Add(applicator_name);
                 }
@@ -169,6 +170,22 @@ namespace SterillizationTracking.Windows
                 ProcessButton.Content = "Process";
             }
         }
+        public string GetMoment()
+        {
+            DateTime moment = DateTime.Now;
+            string Present = moment.ToShortDateString() + "_" + moment.ToShortTimeString();
+            return Present.Replace(":", ".").Replace(" ", "").Replace("/", "."); ;
+        }
+        public void ArchiveDirectory(string category)
+        {
+            if (!Directory.Exists(archive_directory))
+            {
+                Directory.CreateDirectory(archive_directory);
+            }
+            string source = Path.Combine(applicator_directory, category);
+            string target = Path.Combine(archive_directory, $"{category}_{GetMoment()}");
+            Directory.Move(source, target);
+        }
         public static void RecursiveDelete(DirectoryInfo baseDir)
         {
             if (!baseDir.Exists)
@@ -186,13 +203,14 @@ namespace SterillizationTracking.Windows
             bool delete_checked = DeleteCheckBox.IsChecked ?? false;
             bool archived_check = ArchiveCheckBox.IsChecked ?? false;
             string category = Category_Names[CategoriesComboBox.SelectedIndex];
+            string directory_path = Path.Combine(applicator_directory, category);
             if (delete_checked)
             {
-                RecursiveDelete(new DirectoryInfo(Path.Combine(applicator_directory, category)));
+                RecursiveDelete(new DirectoryInfo(directory_path));
             }
             else if (archived_check)
             {
-
+                ArchiveDirectory(category);
             }
             DeleteCheckBox.IsChecked = false;
             ArchiveCheckBox.IsChecked = false;
