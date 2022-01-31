@@ -56,7 +56,7 @@ namespace SterillizationTracking.Windows
         private void Rebuild()
         {
             string[] applicator_list = Directory.GetDirectories(applicator_directory);
-            Category_Names = new List<string> { };
+            Category_Names = new List<string> { "" };
             foreach (string applicator in applicator_list)
             {
                 string[] temp_list = applicator.Split('\\');
@@ -147,13 +147,29 @@ namespace SterillizationTracking.Windows
 
         private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CategoriesComboBox.SelectedItem != null)
+            if (CategoriesComboBox.SelectedItem != "")
             {
                 ArchiveCheckBox.IsEnabled = true;
                 DeleteCheckBox.IsEnabled = true;
             }
+            else
+            {
+                ArchiveCheckBox.IsEnabled = false;
+                DeleteCheckBox.IsEnabled = false;
+            }
         }
-
+        public static void RecursiveDelete(DirectoryInfo baseDir)
+        {
+            if (!baseDir.Exists)
+            {
+                return;
+            }
+            foreach (var dir in baseDir.EnumerateDirectories())
+            {
+                RecursiveDelete(dir);
+            }
+            baseDir.Delete(true);
+        }
         private void ProcessButton_Click(object sender, RoutedEventArgs e)
         {
             bool delete_checked = DeleteCheckBox.IsChecked ?? false;
@@ -161,12 +177,13 @@ namespace SterillizationTracking.Windows
             string category = Category_Names[CategoriesComboBox.SelectedIndex];
             if (delete_checked)
             {
-
+                RecursiveDelete(new DirectoryInfo(Path.Combine(applicator_directory, category)));
             }
             else if (archived_check)
             {
 
             }
+            Rebuild();
         }
     }
 }
