@@ -56,17 +56,18 @@ namespace SterillizationTracking.Windows
         private void Rebuild()
         {
             string[] applicator_list = Directory.GetDirectories(applicator_directory);
-            Category_Names = new List<string> { "" };
+            _category_names = new List<string> { "" };
             foreach (string applicator in applicator_list)
             {
                 string[] temp_list = applicator.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
                 if (applicator_name != "Archived")
                 {
-                    Category_Names.Add(applicator_name);
+                    _category_names.Add(applicator_name);
                 }
             }
             bind();
+            CheckBoxStatusCheck();
         }
         private void bind()
         {
@@ -115,6 +116,7 @@ namespace SterillizationTracking.Windows
             }
             UsesText.Text = "";
             CategoryText.Text = "";
+            Rebuild();
         }
 
         private void CheckBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -139,15 +141,23 @@ namespace SterillizationTracking.Windows
             }
             else
             {
-                ProcessButton.IsEnabled = false;
-                ArchiveCheckBox.IsEnabled = true;
-                DeleteCheckBox.IsEnabled = true;
+                reset();
             }
         }
-
+        private void reset()
+        {
+            ProcessButton.IsEnabled = false;
+            ProcessButton.Content = "Process";
+            ArchiveCheckBox.IsEnabled = true;
+            DeleteCheckBox.IsEnabled = true;
+        }
         private void CategoriesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CategoriesComboBox.SelectedItem != "")
+            CheckBoxStatusCheck();
+        }
+        private void CheckBoxStatusCheck()
+        {
+            if (CategoriesComboBox.SelectedIndex != -1)
             {
                 ArchiveCheckBox.IsEnabled = true;
                 DeleteCheckBox.IsEnabled = true;
@@ -156,6 +166,7 @@ namespace SterillizationTracking.Windows
             {
                 ArchiveCheckBox.IsEnabled = false;
                 DeleteCheckBox.IsEnabled = false;
+                ProcessButton.Content = "Process";
             }
         }
         public static void RecursiveDelete(DirectoryInfo baseDir)
@@ -183,6 +194,8 @@ namespace SterillizationTracking.Windows
             {
 
             }
+            DeleteCheckBox.IsChecked = false;
+            ArchiveCheckBox.IsChecked = false;
             Rebuild();
         }
     }
