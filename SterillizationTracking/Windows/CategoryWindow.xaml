@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="CategoryWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="Category Name" HorizontalAlignment="Left" Height="33" Margin="12,70,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Name="ContentLabel" Content="Category Name" HorizontalAlignment="Left" Height="33" Margin="12,70,0,0" VerticalAlignment="Top" Width="95"/>
         <TextBox x:Name="CategoryText" TextChanged="CategoryNameChanged" HorizontalAlignment="Left" Height="41" Margin="10,108,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="98"/>
-        <Label Content="Total Uses" HorizontalAlignment="Left" Height="33" Margin="128,69,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Content="Total Uses" HorizontalAlignment="Left" Height="33" Margin="138,69,0,0" VerticalAlignment="Top" Width="95"/>
         <TextBox x:Name="UsesText" TextChanged="UsesChanged" HorizontalAlignment="Left" Height="41" Margin="125,109,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="98"/>
         <Button x:Name="AddCategoryButton" Content="AddCategory" HorizontalAlignment="Left" IsEnabled="False" Margin="248,108,0,0" VerticalAlignment="Top" Height="44" Width="95" Click="AddCategory_Click"/>
         <ComboBox x:Name="CategoriesComboBox" HorizontalAlignment="Left" Height="41" Margin="12,230,0,0" VerticalAlignment="Top" Width="221" SelectionChanged="CategoriesComboBox_SelectionChanged"/>

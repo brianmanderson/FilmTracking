@@ -81,6 +81,16 @@ namespace SterillizationTracking.Windows
             AddCategoryButton.IsEnabled = false;
             if (CategoryText.Text != "")
             {
+                if (Directory.Exists(Path.Combine(applicator_directory, CategoryText.Text)))
+                {
+                    UsesText.IsEnabled = false;
+                    ContentLabel.Content = "Already exists!";
+                }
+                else
+                {
+                    UsesText.IsEnabled = true;
+                    ContentLabel.Content = "Category Name";
+                }
                 if (UsesText.Text != "")
                 {
                     if (int.TryParse(UsesText.Text, out _))
@@ -115,8 +125,8 @@ namespace SterillizationTracking.Windows
                 string[] info = { $"Total Uses:{total_uses}" };
                 File.WriteAllLines(out_file, info);
             }
-            UsesText.Text = "";
             CategoryText.Text = "";
+            UsesText.Text = "";
             Rebuild();
         }
 

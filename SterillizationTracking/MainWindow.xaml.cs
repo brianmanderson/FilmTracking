@@ -31,6 +31,7 @@ namespace SterillizationTracking
         private List<string> _kit_numbers;
         private List<string> _kit_names;
         private List<string> _filter_kit_names = new List<string> { "All items"};
+        private string start_message = "Add box of equipment";
 
         public string applicator_directory = Path.GetFullPath(Path.Combine("..", "Equipment_Tracking", "Equipment"));
         public string kit_name;
@@ -129,12 +130,16 @@ namespace SterillizationTracking
             string[] kit_list;
             string actual_kit_number;
             string directory_kit_number;
-            _kit_names = new List<string> { "Select a piece of equipment" };
+            _kit_names = new List<string> { start_message };
             _filter_kit_names = new List<string> { "All items" };
             foreach (string directory_kit_name in applicator_list)
             {
                 string[] temp_list = directory_kit_name.Split('\\');
                 string applicator_name = temp_list[temp_list.Length - 1];
+                if (applicator_name == "Archive")
+                {
+                    continue;
+                }
                 _kit_names.Add(applicator_name);
                 _filter_kit_names.Add(applicator_name);
                 string full_applicator_path = Path.Combine(applicator_directory, directory_kit_name);
@@ -192,7 +197,7 @@ namespace SterillizationTracking
         private void Kit_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             kit_name = Kit_Names[Kit_ComboBox.SelectedIndex];
-            if (kit_name.StartsWith("Select"))
+            if (kit_name.StartsWith(start_message))
             {
                 if (KitNumber_ComboBox != null)
                 {

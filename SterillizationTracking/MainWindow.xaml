@@ -27,6 +27,6 @@
         <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" Margin="853,18,0,0" VerticalAlignment="Top" Height="36" Width="420" Grid.Column="1">
             For issues, please e-mail Brian Anderson @ b5anderson@health.ucsd.edu
         </TextBlock>
-        <Button x:Name="Add_Category" Content="Add Category" IsEnabled="True" HorizontalAlignment="Left" Height="36" Margin="10,18,0,0" VerticalAlignment="Top" Width="136" Click="Add_Category_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="Add_Category" Content="Add/Delete Category" IsEnabled="True" HorizontalAlignment="Left" Height="36" Margin="10,18,0,0" VerticalAlignment="Top" Width="136" Click="Add_Category_Click" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
