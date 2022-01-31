@@ -12,9 +12,10 @@
         <Label Content="Total Uses" HorizontalAlignment="Left" Height="33" Margin="128,69,0,0" VerticalAlignment="Top" Width="95"/>
         <TextBox x:Name="UsesText" TextChanged="UsesChanged" HorizontalAlignment="Left" Height="41" Margin="125,109,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="98"/>
         <Button x:Name="AddCategoryButton" Content="AddCategory" HorizontalAlignment="Left" IsEnabled="False" Margin="248,108,0,0" VerticalAlignment="Top" Height="44" Width="95" Click="AddCategory_Click"/>
-        <ComboBox HorizontalAlignment="Left" Height="41" Margin="12,217,0,0" VerticalAlignment="Top" Width="221"/>
-        <CheckBox x:Name="DeleteCheckBox" Content="Delete?" HorizontalAlignment="Left" Height="32" Margin="261,206,0,0" VerticalAlignment="Top" Width="103"/>
-        <CheckBox x:Name="ArchiveCheckBox" Content="Archive?" HorizontalAlignment="Left" Height="32" Margin="261,246,0,0" VerticalAlignment="Top" Width="103"/>
-        <Button x:Name="ProcessButton" Content="Process" IsEnabled="False" HorizontalAlignment="Left" Height="56" Margin="364,206,0,0" VerticalAlignment="Top" Width="182"/>
+        <ComboBox x:Name="CategoriesComboBox" HorizontalAlignment="Left" Height="41" Margin="12,230,0,0" VerticalAlignment="Top" Width="221" SelectionChanged="CategoriesComboBox_SelectionChanged"/>
+        <CheckBox x:Name="DeleteCheckBox" DataContextChanged="CheckBox_DataContextChanged" Content="Delete?" HorizontalAlignment="Left" Height="32" Margin="261,222,0,0" VerticalAlignment="Top" Width="103" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" IsEnabled="False"/>
+        <CheckBox x:Name="ArchiveCheckBox" Content="Archive?" DataContextChanged="CheckBox_DataContextChanged" HorizontalAlignment="Left" Height="32" Margin="261,259,0,0" VerticalAlignment="Top" Width="103" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" IsEnabled="False"/>
+        <Button x:Name="ProcessButton" Content="Process" IsEnabled="False" HorizontalAlignment="Left" Height="56" Margin="364,222,0,0" VerticalAlignment="Top" Width="182"/>
+        <Label Content="Category to delete or archive" HorizontalAlignment="Left" Height="32" Margin="12,180,0,0" VerticalAlignment="Top" Width="221"/>
     </Grid>
 </Window>
