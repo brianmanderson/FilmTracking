@@ -153,5 +153,20 @@ namespace SterillizationTracking.Windows
                 DeleteCheckBox.IsEnabled = true;
             }
         }
+
+        private void ProcessButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool delete_checked = DeleteCheckBox.IsChecked ?? false;
+            bool archived_check = ArchiveCheckBox.IsChecked ?? false;
+            string category = Category_Names[CategoriesComboBox.SelectedIndex];
+            if (delete_checked)
+            {
+
+            }
+            else if (archived_check)
+            {
+
+            }
+        }
     }
 }
