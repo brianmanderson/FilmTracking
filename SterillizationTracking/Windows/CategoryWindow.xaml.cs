@@ -168,7 +168,7 @@ namespace SterillizationTracking.Windows
         }
         private void CheckBoxStatusCheck()
         {
-            if (CategoriesComboBox.SelectedIndex != -1)
+            if (CategoriesComboBox.SelectedIndex <= 0)
             {
                 ArchiveCheckBox.IsEnabled = true;
                 DeleteCheckBox.IsEnabled = true;
