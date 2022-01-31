@@ -126,6 +126,8 @@ namespace SterillizationTracking
         public void Rebuild_From_Files()
         {
             KitStackPanel.Children.Clear();
+            LabelRow new_row = new LabelRow();
+            KitStackPanel.Children.Add(new_row);
             string[] applicator_list = Directory.GetDirectories(applicator_directory);
             string[] kit_list;
             string actual_kit_number;
