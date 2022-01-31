@@ -12,6 +12,9 @@
         <Label Content="Total Uses" HorizontalAlignment="Left" Height="33" Margin="128,69,0,0" VerticalAlignment="Top" Width="95"/>
         <TextBox x:Name="UsesText" TextChanged="UsesChanged" HorizontalAlignment="Left" Height="41" Margin="125,109,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="98"/>
         <Button x:Name="AddCategoryButton" Content="AddCategory" HorizontalAlignment="Left" IsEnabled="False" Margin="248,108,0,0" VerticalAlignment="Top" Height="44" Width="95" Click="AddCategory_Click"/>
-
+        <ComboBox HorizontalAlignment="Left" Height="41" Margin="12,217,0,0" VerticalAlignment="Top" Width="221"/>
+        <CheckBox x:Name="DeleteCheckBox" Content="Delete?" HorizontalAlignment="Left" Height="32" Margin="261,206,0,0" VerticalAlignment="Top" Width="103"/>
+        <CheckBox x:Name="ArchiveCheckBox" Content="Archive?" HorizontalAlignment="Left" Height="32" Margin="261,246,0,0" VerticalAlignment="Top" Width="103"/>
+        <Button x:Name="ProcessButton" Content="Process" IsEnabled="False" HorizontalAlignment="Left" Height="56" Margin="364,206,0,0" VerticalAlignment="Top" Width="182"/>
     </Grid>
 </Window>
